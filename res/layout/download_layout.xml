@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/downloading"
+              android:textSize="20sp"
+              android:id="@+id/update_download_title"
+              android:layout_marginTop="10dip"
+              android:layout_marginLeft="10dip"
+              android:layout_marginBottom="10dip"
+            />
+    
+    <View android:layout_width="match_parent"
+          android:layout_height="2dip"
+          android:background="@android:color/darker_gray"
+          android:layout_below="@id/update_download_title"
+          android:id="@+id/update_download_line"
+          android:layout_marginLeft="10dip"
+          android:layout_marginRight="10dip"
+            />
+
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/update_download_rl"
+                    android:layout_below="@id/update_download_line"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginRight="10dip"
+                    android:layout_marginTop="20dip"
+                    android:layout_marginBottom="20dip"
+            >
+        <ProgressBar android:layout_width="match_parent"
+                     android:layout_height="20dip"
+                     style="@android:style/Widget.ProgressBar.Horizontal"
+                     android:id="@+id/update_download_progress"
+                     android:layout_centerVertical="true"
+                     android:layout_toLeftOf="@+id/update_download_progressnumber"
+                     android:max="100"
+                />
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_centerVertical="true"
+                  android:layout_alignParentRight="true"
+                  android:layout_marginLeft="5dip"
+                  android:layout_marginRight="5dip"
+                  android:id="@+id/update_download_progressnumber"
+                />
+    </RelativeLayout>
+
+    <View android:layout_width="match_parent"
+          android:layout_height="1dip"
+          android:layout_below="@+id/update_download_rl"
+          android:background="@android:color/transparent"
+            />
+
+</RelativeLayout>

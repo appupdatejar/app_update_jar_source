@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AppUpdateJar</string>
+
+
+    <!--  jar string begin  -->
+    <string name="precent" >%</string>
+    <string name="downloading">正在下载...</string>
+    <!--  jar string end  -->
+</resources>
