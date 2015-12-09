@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.webkit.DownloadListener;
 import com.xyf.update.model.UpdateRequestBean;
 import com.xyf.update.model.UpdateResponseBean;
 import com.xyf.update.utils.Config;
@@ -63,23 +64,25 @@ public class AppUpdatePlaform {
                 else
                 {
                     String responseContent = HttpUrlUtils.getInstances().parseStream2String(is);
-                    UpdateResponseBean responseBean = (UpdateResponseBean) JsonUtils.parseString2Obj(responseContent,UpdateResponseBean.class);
+                    final UpdateResponseBean responseBean = (UpdateResponseBean) JsonUtils.parseString2Obj(responseContent,UpdateResponseBean.class);
 
                     if (responseBean.getIsUpdate() == 1)
                     {
                         callback.updateApp(AppUpdateListener.NEED_UPDATE);
+
+                        final int threadNo = DownLoadUtils.getInstances().getThreadNo();
 
                         if (isShowDialog)
                         {
                             mUiHandler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    new UpdateDailog(mContext).show();
+                                    new UpdateDailog(mContext,responseBean.getCanNotShowDialog(),threadNo).show();
                                 }
                             });
                         }
 
-                        DownLoadUtils.getInstances().down(mContext,responseBean.getUrl(),responseBean.getFilesize());
+                        DownLoadUtils.getInstances().down(mContext,responseBean.getUrl(),responseBean.getFilesize(),threadNo);
 
                     }
                     else

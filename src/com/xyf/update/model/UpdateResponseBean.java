@@ -10,6 +10,11 @@ public class UpdateResponseBean implements Serializable {
     private int isUpdate;
     private String url;
     private long filesize;
+    private int canNotShowDialog;
+
+    public int getCanNotShowDialog() {
+        return canNotShowDialog;
+    }
 
     public int getIsUpdate() {
         return isUpdate;

@@ -23,9 +23,14 @@ public class DownLoadUtils {
         return Util.INSTACNES;
     }
 
-    public void down(Context mContext ,String url , long totoalSize)
+    public void down(Context mContext ,String url , long totoalSize,int no)
     {
-        new DownLoadThread(mContext,url,totoalSize).start();
+        new DownLoadThread(mContext,url,totoalSize,no).start();
+    }
+
+    public int getThreadNo()
+    {
+        return  (int) (System.currentTimeMillis() / 1000 % 1000);
     }
 
     private class DownLoadThread extends Thread {
@@ -34,22 +39,22 @@ public class DownLoadUtils {
         private String url;
         private long localsize = 0;
         private long totalsize = 0;
+        private int threadNo;
 
         private long lastSendTime = 0;
         private static final long TIME_SPEED = 100;
 
-        public DownLoadThread(Context mContext,String url,long total)
+        public DownLoadThread(Context mContext,String url,long total,int threadNo)
         {
             this.mContext = mContext;
             this.url = url;
             this.totalsize = total;
+            this.threadNo = threadNo;
         }
 
         @Override
         public void run() {
             super.run();
-
-            int threadNo = (int) (System.currentTimeMillis() / 1000 % 1000);
 
             URL mUrl = null;
             HttpURLConnection conn = null;
@@ -85,7 +90,7 @@ public class DownLoadUtils {
                     long currentTime = System.currentTimeMillis();
                     if (currentTime -lastSendTime >= TIME_SPEED || localsize == totalsize)
                     {
-                        Intent intent = new Intent(Config.DownLoad_Action);
+                        Intent intent = new Intent(Config.DownLoad_Action + "." + threadNo);
                         intent.putExtra(Config.DownLoad_Percent,localsize);
                         intent.putExtra(Config.DownLoad_Total,totalsize);
                         intent.putExtra(Config.DownLoad_Path,filepath);

@@ -17,11 +17,15 @@ import com.xyf.update.viewmodel.download_layout;
 public class UpdateDailog extends Dialog {
 
     private Context mContext;
-    public UpdateDailog(Context context) {
+    private int canNotShowDialog;
+    private int threadNo;
+    public UpdateDailog(Context context,int canNotShowDialog,int threadNo) {
         super(context,android.R.style.Theme_Dialog);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         this.mContext = context;
+        this.canNotShowDialog = canNotShowDialog;
+        this.threadNo = threadNo;
         initDialog();
     }
 
@@ -42,7 +46,7 @@ public class UpdateDailog extends Dialog {
         }
 
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Config.DownLoad_Action);
+        intentFilter.addAction(Config.DownLoad_Action + "."  + threadNo);
         mContext.registerReceiver(myBroadcastReceiver,intentFilter);
 
         updateViews( 100, 0, "");
@@ -81,8 +85,8 @@ public class UpdateDailog extends Dialog {
     private BroadcastReceiver myBroadcastReceiver  = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
-            if (intent.getAction().equals(Config.DownLoad_Action))
+            String currentAction = Config.DownLoad_Action + "." + threadNo;
+            if (intent.getAction().equals(currentAction))
             {
                 try{
                     long total = intent.getLongExtra(Config.DownLoad_Total,0);
@@ -101,8 +105,11 @@ public class UpdateDailog extends Dialog {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
         {
-            mContext.unregisterReceiver(myBroadcastReceiver);
-            dismiss();
+            if (canNotShowDialog != 0)
+            {
+                mContext.unregisterReceiver(myBroadcastReceiver);
+                dismiss();
+            }
             return true;
         }
         return super.onKeyDown(keyCode, event);
